@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="./styles/main.css" />
   </head>
   <body>
+    <header class="header">
+      <h1 class="header__title">buscador de series</h1>
+    </header>
+    <main>
+      <form action="signup" method="GET">
+        <input type="text" name="serie" placeholder="nombre de serie" />
+        <input type="submit" value="search" />
+      </form>
+      <article class="card">
+        <h2 class="card__title"></h2>
+        <img
+          src="https://via.placeholder.com/210x295/ffffff/666666/?
+        text=TV."
+          alt="foto de la serie"
+        />
+      </article>
+      <h2>Mis series favoritas</h2>
+      <ul class="series-list">
+        <li class="favourite-serie"></li>
+      </ul>
+    </main>
     <script src="./js/main.js"></script>
   </body>
 </html>
