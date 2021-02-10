@@ -56,7 +56,7 @@ function handleSearchBtn(ev) {
 
 inputBtnElement.addEventListener("click", handleSearchBtn);
 
-//pintar tarjeta
+//Pongo en la página las series buscadas
 
 function renderCards() {
   cardSeriesElement.innerHTML = "";
@@ -87,6 +87,7 @@ function renderCards() {
     htmlCode += "</li>";
   }
   cardSeriesElement.innerHTML = htmlCode;
+
   listenSeriesClick();
 }
 
@@ -117,6 +118,31 @@ function handleAddFavorites(ev) {
   });
   favoriteSeries.push(serieFound);
   renderCards();
+}
 
-  console.log(serieFound);
+//añado mis series favoritas a su sección, no he conseguido que las series favoritas aparezcan pintadas en su sección, he probado a poner la funcion renderFavoriteCards despues de escuchar el evento de favoritas y me sale errores en consola.
+
+function renderFavoriteCards() {
+  cardFavoriteElement.innerHTML = "";
+  let htmlCode = "";
+
+  htmlCode += `<li class="js-list card__list" id="${show.id}">`;
+  htmlCode += `<h2 class="card__title js-card__title">${show.name}</h2>`;
+
+  if (show.image === null) {
+    htmlCode += `<img
+    class="js-image"
+    src="https://via.placeholder.com/210x295/ffffff/666666/? text=TV."
+    alt="serie sin foto"
+  />`;
+  } else {
+    htmlCode += `<img
+      class="js-image"
+      src="${show.image.medium}"
+      alt="${show.name}"
+    />`;
+  }
+  htmlCode += "</li>";
+  cardFavoriteElement.innerHTML = htmlCode;
+  handleAddFavorites(ev);
 }
