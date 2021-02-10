@@ -1,8 +1,9 @@
 "use strict";
 
 const inputElement = document.querySelector(".js-input");
-const cardElement = document.querySelector(".js-card");
+const cardSeriesElement = document.querySelector(".js-card-series");
 const inputBtnElement = document.querySelector(".js-button");
+const cardFavoriteElement = document.querySelector(".js-favorite__series");
 
 //variables de datos globales:
 
@@ -13,26 +14,61 @@ let favoriteSeries = [];
 
 function getDataFromApi() {
   const inputValue = inputElement.value;
-  fetch(`http://api.tvmaze.com/search/shows?q=${inputValue}`)
+  fetch(`https://api.tvmaze.com/search/shows?q=${inputValue}`)
     .then((response) => response.json())
     .then((shows) => {
       dataSeriesList = [];
       for (const show of shows) {
         dataSeriesList.push(show.show);
       }
-      //console.log(dataSeriesList);
-
       renderCards();
+      setInLocalStorage();
     });
 }
+
+//local storage
+
+function setInLocalStorage() {
+  const stringSeries = JSON.stringify(dataSeriesList);
+  localStorage.setItem("series", stringSeries);
+}
+function getFromLocalStorage() {
+  const localStorageSeries = localStorage.getItem("series");
+  if (localStorageSeries === null) {
+    getDataFromApi();
+  } else {
+    const arraySeries = JSON.parse(localStorageSeries);
+    dataSeriesList = arraySeries;
+    renderCards();
+  }
+}
+
+//Arrancar la página
+getFromLocalStorage();
+
+//CAMPO DE BUSQUEDA
+
+function handleSearchBtn(ev) {
+  ev.preventDefault();
+  getDataFromApi();
+  getFromLocalStorage();
+}
+
+inputBtnElement.addEventListener("click", handleSearchBtn);
 
 //pintar tarjeta
 
 function renderCards() {
-  cardElement.innerHTML = "";
+  cardSeriesElement.innerHTML = "";
   let htmlCode = "";
   for (const show of dataSeriesList) {
-    htmlCode += `<li class="js-list card__list">`;
+    let isFavoriteClass;
+    if (isFavoriteSerie(show)) {
+      isFavoriteClass = "card__list--selected";
+    } else {
+      isFavoriteClass = "";
+    }
+    htmlCode += `<li class="js-list card__list" id="${show.id}>`;
     htmlCode += `<h2 class="card__title js-card__title">${show.name}</h2>`;
 
     if (show.image === null) {
@@ -50,32 +86,36 @@ function renderCards() {
     }
     htmlCode += "</li>";
   }
-  cardElement.innerHTML = htmlCode;
-  //listen events
+  cardSeriesElement.innerHTML = htmlCode;
+  listenSeriesClick();
+}
 
+function isFavoriteSerie(show) {
+  const favoriteFound = favoriteSeries.find((favoriteSerie) => {
+    return favoriteSerie.id === show.id;
+  });
+  if (favoriteFound === undefined) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+//escucho click de favoritas
+function listenSeriesClick() {
   const listElementSeries = document.querySelectorAll(".js-list");
   for (const iterator of listElementSeries) {
     iterator.addEventListener("click", handleAddFavorites);
   }
 }
 
-//CAMPO DE BUSQUEDA
-
-function handleSearchBtn(ev) {
-  ev.preventDefault();
-  getDataFromApi();
-}
-
-inputBtnElement.addEventListener("click", handleSearchBtn);
-
-//seleccionar de la lista las favoritas
-
+//escucho evento favoritas
 function handleAddFavorites(ev) {
-  const favoriteList = ev.currentTarget;
-  favoriteList.classList.toggle("card__list--selected");
-  //console.log(favoriteList);
-  // añadir a favortios
-  // repintar
-  //favoriteSeries.push(favoriteList);
+  const clickedSerieId = ev.currentTarget.id;
+  const serieFound = dataSeriesList.find(function (serie) {
+    return serie.id === clickedSerieId;
+  });
+  favoriteSeries.push(serieFound);
   renderCards();
+  console.log(serieFound);
 }
