@@ -68,7 +68,7 @@ function renderCards() {
     } else {
       isFavoriteClass = "";
     }
-    htmlCode += `<li class="js-list card__list" id="${show.id}>`;
+    htmlCode += `<li class="js-list card__list ${isFavoriteClass}" id="${show.id}>`;
     htmlCode += `<h2 class="card__title js-card__title">${show.name}</h2>`;
 
     if (show.image === null) {
