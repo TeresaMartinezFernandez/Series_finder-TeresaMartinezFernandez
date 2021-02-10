@@ -68,7 +68,7 @@ function renderCards() {
     } else {
       isFavoriteClass = "";
     }
-    htmlCode += `<li class="js-list card__list ${isFavoriteClass}" id="${show.id}>`;
+    htmlCode += `<li class="js-list card__list ${isFavoriteClass}" id="${show.id}">`;
     htmlCode += `<h2 class="card__title js-card__title">${show.name}</h2>`;
 
     if (show.image === null) {
@@ -111,11 +111,12 @@ function listenSeriesClick() {
 
 //escucho evento favoritas
 function handleAddFavorites(ev) {
-  const clickedSerieId = ev.currentTarget.id;
+  const clickedSerieId = parseInt(ev.currentTarget.id);
   const serieFound = dataSeriesList.find(function (serie) {
     return serie.id === clickedSerieId;
   });
   favoriteSeries.push(serieFound);
   renderCards();
+
   console.log(serieFound);
 }

@@ -1,7 +1,19 @@
+.header {
+  display: flex;
+  justify-content: center;
+}
+.header__title {
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.card__title {
+  font-family: Arial, Helvetica, sans-serif;
+}
 .card__list {
   color: blue;
   background-color: plum;
   cursor: pointer;
+  list-style: none;
 }
 .card__list--selected {
   color: plum;
