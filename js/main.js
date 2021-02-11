@@ -4,6 +4,7 @@ const inputElement = document.querySelector(".js-input");
 const cardSeriesElement = document.querySelector(".js-card-series");
 const inputBtnElement = document.querySelector(".js-button");
 const cardFavoriteElement = document.querySelector(".js-favorite__series");
+const inputLogElement = document.querySelector(".js-log");
 
 //variables de datos globales:
 
@@ -70,6 +71,7 @@ function renderCards() {
     }
     htmlCode += `<li class="js-list card__list ${isFavoriteClass}" id="${show.id}">`;
     htmlCode += `<h2 class="card__title js-card__title">${show.name}</h2>`;
+    htmlCode += `<p>${show.status}</p>`;
 
     if (show.image === null) {
       htmlCode += `<img
@@ -146,3 +148,12 @@ function renderFavoriteCards() {
   cardFavoriteElement.innerHTML = htmlCode;
   handleAddFavorites(ev);
 }
+function handleRunFavorites(ev) {
+  ev.preventDefault();
+  for (const favoriteSerie of favoriteSeries) {
+    const favoriteSerieItem = favoriteSerie;
+    console.log(favoriteSerieItem.name);
+  }
+}
+
+inputLogElement.addEventListener("click", handleRunFavorites);
