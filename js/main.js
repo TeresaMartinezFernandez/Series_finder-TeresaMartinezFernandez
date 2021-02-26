@@ -10,6 +10,8 @@ const inputLogElement = document.querySelector(".js-log");
 
 let dataSeriesList = [];
 let favoriteSeries = [];
+const urlPlaceholder =
+  "https://via.placeholder.com/210x295/ffffff/666666/? text=TV.";
 
 //pido la lista de series al API
 
@@ -23,7 +25,6 @@ function getDataFromApi() {
         dataSeriesList.push(show.show);
       }
       renderCards();
-      setInLocalStorage();
     });
 }
 
@@ -76,7 +77,7 @@ function renderCards() {
     if (show.image === null) {
       htmlCode += `<img
     class="js-image"
-    src="https://via.placeholder.com/210x295/ffffff/666666/? text=TV."
+    src= "${urlPlaceholder}"
     alt="serie sin foto"
   />`;
     } else {
@@ -128,31 +129,30 @@ function renderFavoriteCards() {
   cardFavoriteElement.innerHTML = "";
   let htmlCode = "";
 
-  htmlCode += `<li class="js-list card__list" id="${show.id}">`;
-  htmlCode += `<h2 class="card__title js-card__title">${show.name}</h2>`;
+  htmlCode += `<li class="js-list card__list" id="${favoriteSerie.id}">`;
+  htmlCode += `<h2 class="card__title js-card__title">${favoriteSerie.name}</h2>`;
 
-  if (show.image === null) {
+  if (favoriteSerie.image === null) {
     htmlCode += `<img
     class="js-image"
-    src="https://via.placeholder.com/210x295/ffffff/666666/? text=TV."
+    src= "${urlPlaceholder}"
     alt="serie sin foto"
   />`;
   } else {
     htmlCode += `<img
       class="js-image"
-      src="${show.image.medium}"
-      alt="${show.name}"
+      src="${favoriteSerie.image.medium}"
+      alt="${favoriteSerie.name}"
     />`;
   }
   htmlCode += "</li>";
   cardFavoriteElement.innerHTML = htmlCode;
-  handleAddFavorites(ev);
+  handleRunFavorites(ev);
 }
 function handleRunFavorites(ev) {
   ev.preventDefault();
   for (const favoriteSerie of favoriteSeries) {
-    const favoriteSerieItem = favoriteSerie;
-    console.log(favoriteSerieItem.name);
+    console.log(favoriteSerie.name, favoriteSerie.image.medium);
   }
 }
 
