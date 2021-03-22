@@ -3,13 +3,11 @@
 const inputElement = document.querySelector(".js-input");
 const cardSeriesElement = document.querySelector(".js-card-series");
 const inputBtnElement = document.querySelector(".js-button");
-const cardFavoriteElement = document.querySelector(".js-favorite__series");
-const inputLogElement = document.querySelector(".js-log");
 
 //variables de datos globales:
 
-let dataSeriesList = [];
-let favoriteSeries = [];
+let dataSeriesList = []; //Array que guarda la busqueda de las series
+let favoriteSeries = []; //Array que guarda los favoritos
 const urlPlaceholder =
   "https://via.placeholder.com/210x295/ffffff/666666/? text=TV.";
 
@@ -24,7 +22,9 @@ function getDataFromApi() {
       for (const show of shows) {
         dataSeriesList.push(show.show);
       }
+
       renderCards();
+      setInLocalStorage();
     });
 }
 
@@ -54,6 +54,7 @@ function handleSearchBtn(ev) {
   ev.preventDefault();
   getDataFromApi();
   getFromLocalStorage();
+  renderCards();
 }
 
 inputBtnElement.addEventListener("click", handleSearchBtn);
@@ -112,48 +113,90 @@ function listenSeriesClick() {
     iterator.addEventListener("click", handleAddFavorites);
   }
 }
-
-//escucho evento favoritas
+// funcion que añade al array de favoritos la serie seleccionada y la quita
 function handleAddFavorites(ev) {
   const clickedSerieId = parseInt(ev.currentTarget.id);
-  const serieFound = dataSeriesList.find(function (serie) {
-    return serie.id === clickedSerieId;
+
+  const serieFoundIndex = favoriteSeries.findIndex(function (favorite) {
+    return favorite.id === clickedSerieId;
   });
-  favoriteSeries.push(serieFound);
+
+  if (serieFoundIndex === -1) {
+    const serieFound = dataSeriesList.find(function (serie) {
+      return serie.id === clickedSerieId;
+    });
+
+    favoriteSeries.push(serieFound);
+  } else {
+    favoriteSeries.splice(serieFoundIndex, 1);
+  }
   renderCards();
+  renderFavoriteCards();
 }
 
-//añado mis series favoritas a su sección, no he conseguido que las series favoritas aparezcan pintadas en su sección, he probado a poner la funcion renderFavoriteCards despues de escuchar el evento de favoritas y me sale errores en consola.
+//funcion que renderiza las series favoritas
 
 function renderFavoriteCards() {
+  const cardFavoriteElement = document.querySelector(".js-favorite__series");
   cardFavoriteElement.innerHTML = "";
   let htmlCode = "";
+  for (let favoriteSerie of favoriteSeries) {
+    htmlCode += `<li class="js-list card__list--favorite" id="${favoriteSerie.id}">`;
+    htmlCode += `<h2 class="card__title js-card__title">${favoriteSerie.name}</h2><i class="far fa-times-circle js-buttonRemove" title="Eliminar serie de favoritos" aria-hidden="true"></i>`;
 
-  htmlCode += `<li class="js-list card__list" id="${favoriteSerie.id}">`;
-  htmlCode += `<h2 class="card__title js-card__title">${favoriteSerie.name}</h2>`;
-
-  if (favoriteSerie.image === null) {
-    htmlCode += `<img
+    if (favoriteSerie.image === null) {
+      htmlCode += `<img
     class="js-image"
     src= "${urlPlaceholder}"
     alt="serie sin foto"
   />`;
-  } else {
-    htmlCode += `<img
+    } else {
+      htmlCode += `<img
       class="js-image"
       src="${favoriteSerie.image.medium}"
       alt="${favoriteSerie.name}"
     />`;
+    }
+    htmlCode += "</li>";
+    cardFavoriteElement.innerHTML = htmlCode;
   }
-  htmlCode += "</li>";
-  cardFavoriteElement.innerHTML = htmlCode;
+
   handleRunFavorites(ev);
+  // renderCards();
 }
 function handleRunFavorites(ev) {
   ev.preventDefault();
-  for (const favoriteSerie of favoriteSeries) {
-    console.log(favoriteSerie.name, favoriteSerie.image.medium);
-  }
+  renderFavoriteCards();
 }
 
 inputLogElement.addEventListener("click", handleRunFavorites);
+
+//FUNCION PARA ELIMINAR TODOS LOS FAVORITOS A LA VEZ
+const buttonRemoveAll = document.querySelector(".js-buttonRemoveAll");
+
+const removeAllFavorites = () => {
+  favoriteSeries = [];
+  renderFavoriteCards();
+};
+
+buttonRemoveAll.addEventListener("click", removeAllFavorites);
+
+//FUNCION PARA ELIMINAR INDIVIDUALMENTE CADA SERIE
+
+const removeFavorite = (ev) => {
+  const clickedButton = ev.currentTarget;
+  const clickedButtonParentId = parseInt(clickedButton.parentElement.id);
+  const favElementId = favoriteSeries.findIndex(
+    (favorite) => favorite.id === clickedButtonParentId
+  );
+  favoriteSeries.splice(favElementId, 1);
+  // saveFavoritesOnLocalStorage();
+  renderFavoriteCards();
+};
+
+const addListenersToDeleteButtons = () => {
+  const buttonsRemove = document.querySelectorAll(".js-buttonRemove");
+  for (const button of buttonsRemove) {
+    button.addEventListener("click", removeFavorite);
+  }
+};
