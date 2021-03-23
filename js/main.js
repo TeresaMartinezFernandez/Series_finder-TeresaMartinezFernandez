@@ -142,17 +142,16 @@ function renderFavoriteCards() {
   let htmlCode = "";
   for (let favoriteSerie of favoriteSeries) {
     htmlCode += `<li class="js-list card__list--favorite" id="${favoriteSerie.id}">`;
-    htmlCode += `<h2 class="card__title js-card__title">${favoriteSerie.name}</h2><i class="far fa-times-circle js-buttonRemove" title="Eliminar serie de favoritos" aria-hidden="true"></i>`;
+    htmlCode += `<h2 class="favorite__title--card js-card__title">${favoriteSerie.name}</h2><i class="far fa-times-circle js-buttonRemove" title="Eliminar serie de favoritos" aria-hidden="true"></i>`;
 
     if (favoriteSerie.image === null) {
-      htmlCode += `<img
-    class="js-image"
+      htmlCode += `<img class="favorite-img"
     src= "${urlPlaceholder}"
     alt="serie sin foto"
   />`;
     } else {
       htmlCode += `<img
-      class="js-image"
+      class="js-image favorite-img"
       src="${favoriteSerie.image.medium}"
       alt="${favoriteSerie.name}"
     />`;

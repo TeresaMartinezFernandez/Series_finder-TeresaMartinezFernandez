@@ -6,33 +6,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Modulo 2 Evaluación final</title>
     <link rel="stylesheet" href="./styles/main.css" />
-    <script src="https://kit.fontawesome.com/7fa95d1a39.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/7fa95d1a39.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body class="container">
     <header class="header">
-      <h1 class="header__title">buscador de series</h1>
-    </header>
-    <main class="main">
-      <form class="form" action="" method="GET">
-        <input
-          class="js-input"
-          type="text"
-          name="serie"
-          placeholder="nombre de serie"
-        />
-        <input class="inputbtn js-button" type="submit" value="buscar" />
-        <input type="submit" value="borrar favoritos" class="js-buttonRemoveAll" /><i class="far fa-trash-alt" aria-hidden="true"></i>
+      <h1 class="header__title">
+        buscador de series <i class="fas fa-tv"></i>
+      </h1>
+      <form class="form">
+        <label class="label" for="search">
+          <input
+            class="js-input input-search"
+            type="text"
+            id="search"
+            placeholder="nombre de serie"
+          />
+        </label>
+        <button class="inputbtn js-button">
+          <i class="icon js-search fas fa-search"></i>
+        </button>
+        <button class="js-buttonRemoveAll btnremove">
+          Borrar favoritos .<i class="far fa-trash-alt" aria-hidden="true"></i>
+        </button>
       </form>
-      <div class="favorite__card">
-      <h2 class="favorite__title">Mis series favoritas</h2>
-      <ul class="js-favorite__series"></ul>
+    </header>
+    <div class="main__container">
+      <main class="main">
+        <div class="favorite__card">
+          <h2 class="favorite__title">
+            Mis series favoritas <i class="fas fa-heart"></i>
+          </h2>
+          <ul class="js-favorite__series favorite__list"></ul>
+        </div>
+        <ul class="card js-card-series"></ul>
+      </main>
     </div>
-      <ul class="card js-card-series"></ul>
-     
-    <!-- <footer class="footer">
-      <small class="footer__small">&copy Teresa Martinez 2021</small>
 
-    </footer> -->
+    <footer class="footer">
+      <small class="footer__small">&copy Teresa Martinez 2021</small>
+      <nav class="social_icons">
+        <a
+          class="email_icon"
+          href="mailto:teresamf64@gmail.com"
+          alt="enlace email"
+          ><i class="fas fa-envelope"> </i
+        ></a>
+        <a class="twitter_icon" href="https://twitter.com/teresamarfer"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a
+          class="github_icon"
+          class="link"
+          href="https://github.com/TeresaMartinezFernandez"
+          ><i class="fab fa-github-alt"> </i
+        ></a>
+      </nav>
+    </footer>
     <script src="./js/main.js"></script>
   </body>
 </html>
